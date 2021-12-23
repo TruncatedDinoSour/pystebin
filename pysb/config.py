@@ -8,7 +8,7 @@ HOST: str = "127.0.0.1"
 PORT: int = 5050
 DEBUG: bool = True
 SECRET_KEY: bytes = os.urandom(20_000_000)
-MAX_PASTE_COUNT: Optional[int] = 3  # or for example 100, None disables it
+MAX_PASTE_COUNT: Optional[int] = None  # or for example 100, None disables it
 
 
 class RequestLimiterConfig:
