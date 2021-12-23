@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+
+    font-size: 1.12em;
+
+    color: #ddd0c0;
+    background-color: #262220;
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    outline: none;
+
+    font-family: monospace;
+    font-weight: bold;
+
+    scrollbar-width: none; /* For firefox */
+}
+
+::-webkit-scrollbar {
+  display: none;
+  /* for chrome, safari, and opera */
+}
+
+body {
+    padding: 2em;
+}
+
+
+textarea {
+    width: 100%;
+    height: 82pc;
+
+    border: none;
+    resize: none;
+
+    overflow: scroll;
+}
+
+
+input {
+    border-style: dashed;
+
+    display: block;
+    width: 100%;
+
+    margin: 0.3em;
+    padding: 0.3em;
+}
+
+input[type=submit] {
+    letter-spacing: 0.1ch;
+    transition: background-color 0.6s;
+}
+
+input[type=submit]:hover,
+input[type=submit]:focus {
+    background-color: #ddd0c010;
+    transition: background-color 0.6s;
+}
+
+
+code {
+    white-space: pre;
+}
+
+
+.glow {
+    text-shadow: 0px 0px 3px white;
+}

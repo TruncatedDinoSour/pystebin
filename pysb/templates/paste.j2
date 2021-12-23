@@ -1,0 +1,14 @@
+{% extends "base.j2" %}
+
+{% block content %}
+    <div>
+        <p align="center" style="font-size: 1.5em;">
+            <i class="glow">{{ name or "Untitled " + paste_id }}</i> by <i class="glow">{{ author or "Anonymous" }}</i>
+        </p>
+
+        <br/>
+
+        <code>{{ text or "<i>No text content provided</i>" }}</code>
+    </div>
+{% endblock %}
+

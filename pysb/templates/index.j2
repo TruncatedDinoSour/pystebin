@@ -1,0 +1,10 @@
+{% extends "base.j2" %}
+
+{% block content %}
+    <form method="POST" autocomplete="off">
+        <textarea name="paste" id="paste" placeholder="paste..."></textarea>
+        <input type="text" name="author" id="author" placeholder="author..."/>
+        <input type="text" name="name" id="name" placeholder="name..."/>
+        <input class="glow" type="submit" name="submit" id="submit" value="Paste #{{ paste_count + 1 }}"/>
+    </form>
+{% endblock %}
