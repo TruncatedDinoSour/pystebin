@@ -39,29 +39,6 @@ def limit_content_length(max_length):
     return decorator
 
 
-def copy_func(f):
-    """Based on http://stackoverflow.com/a/6528148/190597 (Glenn Maynard)"""
-    g = types.FunctionType(
-        f.__code__,
-        f.__globals__,
-        name=f.__name__,
-        argdefs=f.__defaults__,
-        closure=f.__closure__,
-    )
-    g = functools.update_wrapper(g, f)
-    g.__kwdefaults__ = f.__kwdefaults__
-    return g
-
-
-def rename_function(name):
-    def decorator(f):
-        f = copy_func(f)
-        f.__name__ = name
-        return copy_func(f)
-
-    return decorator
-
-
 def to_snake_case(name):
     name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
     name = re.sub("__([A-Z])", r"_\1", name)
