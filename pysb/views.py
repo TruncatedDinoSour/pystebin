@@ -19,7 +19,7 @@ views = Blueprint("views", __name__)
 @views.route("/", methods=["GET"])
 def index() -> str:
     if not os.path.exists(PASTE_DIR):
-        os.mkdir(PASTE_DIR)
+        os.makedirs(PASTE_DIR, exist_ok=True)
 
     return render_template(
         "index.j2", title="paste", paste_count=len(os.listdir(PASTE_DIR))
@@ -31,7 +31,7 @@ def index() -> str:
 def paste() -> Any:
     if MAX_PASTE_COUNT is not None and len(os.listdir(PASTE_DIR)) >= MAX_PASTE_COUNT:
         rmtree(PASTE_DIR)
-        os.mkdir(PASTE_DIR)
+        os.makedirs(PASTE_DIR, exist_ok=True)
 
     filename = unique_filename(PASTE_DIR)
 

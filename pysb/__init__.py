@@ -1,32 +1,49 @@
 """Main components"""
 
+import logging
 import os
+from logging.config import dictConfig as logging_dict_config
 from typing import Any
 
 from flask import Flask, flash, g, redirect
 from flask_limit import RateLimiter
 
-from .config import PASTE_DIR, SECRET_KEY, WEBSITE_NAME, RequestLimiterConfig
+from .config import (LOG_DIR, LOGGING_CONFIG, PASTE_DIR, REQUEST_CODES,
+                     SECRET_KEY, WEBSITE_NAME, RequestLimiterConfig)
 
 
 def create_app() -> Flask:
     """Make a new app"""
 
+    if not os.path.exists(LOG_DIR):
+        os.makedirs(LOG_DIR, exist_ok=True)
+
+    logging_dict_config(LOGGING_CONFIG)
+
     app = Flask(__name__)
-    try:
-        os.mkdir(PASTE_DIR)
-    except FileExistsError:
-        pass
+    log = logging.getLogger(__name__)
+
+    os.makedirs(PASTE_DIR, exist_ok=True)
 
     app.config.from_object(RequestLimiterConfig)
     app.config["SECRET_KEY"] = SECRET_KEY
 
     limiter = RateLimiter(app)
 
-    @app.errorhandler(404)
-    def not_found(e: Any) -> Any:
-        flash(str(e), "not_found")
-        return redirect("/messages")
+    @app.errorhandler(Exception)
+    def http_error_handler(error) -> Any:
+        try:
+            flash(
+                f"{error} ~ HTTP/{error.code}",
+                REQUEST_CODES.get(error.code) or "http_errno",
+            )
+        except AttributeError:
+            err_msg = f"{error.__class__.__name__}: {error} ~ http_fatal_errno"
+            log.error(err_msg)
+
+            return err_msg, 500
+
+        return redirect("/messages", 308)
 
     @app.context_processor
     def context() -> dict[str, str]:
@@ -43,7 +60,7 @@ def create_app() -> Flask:
         rv.headers.extend(headers)
         return rv
 
-    del before_request, after_request, context, not_found
+    del before_request, after_request, context, http_error_handler
 
     from .views import views
 
