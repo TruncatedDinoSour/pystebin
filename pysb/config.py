@@ -60,7 +60,7 @@ LOGGING_CONFIG: dict = {
     },
     "loggers": {
         "": {"handlers": ["error.log"], "level": logging.ERROR},
-        "debug_log": {"handlers": ["debug.log"], "level": logging.DEBUG},
+        "debug.log": {"handlers": ["debug.log"], "level": logging.DEBUG},
     },
 }
 
