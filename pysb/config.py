@@ -1,3 +1,5 @@
+"""Pystebin configuration file"""
+
 import logging
 import os
 import socket
@@ -9,6 +11,8 @@ from .util import to_snake_case
 
 
 def get_ip() -> str:
+    """Get local ip address"""
+
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         s.connect(("10.255.255.255", 1))  # Does not have to be reachable
@@ -66,5 +70,7 @@ LOGGING_CONFIG: dict = {
 
 
 class RequestLimiterConfig:
+    """Rate limiter configuration class"""
+
     RATELIMITE_LIMIT = 10
     RATELIMIT_PERIOD = 30

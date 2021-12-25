@@ -18,6 +18,8 @@ views = Blueprint("views", __name__)
 
 @views.route("/", methods=["GET"])
 def index() -> str:
+    """Home page"""
+
     if not os.path.exists(PASTE_DIR):
         os.makedirs(PASTE_DIR, exist_ok=True)
 
@@ -29,6 +31,8 @@ def index() -> str:
 @views.route("/", methods=["POST"])
 @limit_content_length(MAX_PASTE_SIZE_B)
 def paste() -> Any:
+    """Save a paste to disk"""
+
     if MAX_PASTE_COUNT is not None and len(os.listdir(PASTE_DIR)) >= MAX_PASTE_COUNT:
         rmtree(PASTE_DIR)
         os.makedirs(PASTE_DIR, exist_ok=True)
@@ -52,6 +56,8 @@ def paste() -> Any:
 
 @views.route("/p/<paste_name>", methods=["GET"])
 def get_paste(paste_name) -> Any:
+    """Get paste from disk"""
+
     try:
         with open(os.path.join(PASTE_DIR, paste_name), "r") as p:
             paste_json = json.load(p)
@@ -69,17 +75,21 @@ def get_paste(paste_name) -> Any:
 
             return render_template("paste.j2", **paste_json)
     except FileNotFoundError:
-        flash(f"Paste /{paste_name}/ not found", "error")
+        flash(f"Paste /{escape_html(paste_name)}/ not found", "error")
         return redirect("/messages")
 
 
 @views.route("/messages", methods=["GET"])
 def get_server_messages() -> str:
+    """Get flashed messages"""
+
     return render_template("msg.j2", title="messages")
 
 
 @views.route("/favicon.ico")
 def favicon() -> Any:
+    """Icon"""
+
     return send_from_directory(
         os.path.join(views.root_path, "static"),
         "favicon.ico",

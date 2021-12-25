@@ -32,6 +32,8 @@ def create_app() -> Flask:
 
     @app.errorhandler(Exception)
     def http_error_handler(error) -> Any:
+        """Handle all errors in app, log them"""
+
         try:
             flash(
                 f"{error} ~ HTTP/{error.code}",
@@ -47,15 +49,21 @@ def create_app() -> Flask:
 
     @app.context_processor
     def context() -> dict[str, str]:
+        """Inject variables in all templates"""
+
         return {"website_name": WEBSITE_NAME}
 
     @app.before_request
     @limiter.rate_limit
     def before_request() -> None:
+        """Before request callback"""
+
         pass
 
     @app.after_request
     def after_request(rv):
+        """After request callback"""
+
         headers = getattr(g, "headers", {})
         rv.headers.extend(headers)
         return rv
